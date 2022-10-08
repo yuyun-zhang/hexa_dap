@@ -175,7 +175,7 @@ do
         n1=`awk 'NR=="'$i'"{print $2*1}' ${j}.log2fc.matrix.abssum.quantile`
         n2=`awk 'NR=="'$i'"{print $3*1}' ${j}.log2fc.matrix.abssum.quantile`
 
-        sort -k1,1 ${j}.log2fc.matrix.abssum | join -1 1 - -2 1 <(sort -k1,1 ${j}.expr.log2fc) | sed 's/-//2' | \
+        sort -k1,1 ${j}.log2fc.matrix.abssum | join -1 1 - -2 1 <(sort -k1,1 ${j}.expr.log2fc) | awk '{if($3<0)print $1,$2,$3*(-1);else print $0}' | \
             awk -v n1=$n1 -v n2=$n2 '$2>=n1&&$2<=n2{print $0" level'$i'","'$j'"}' >> plot.regu-abslog2fc-level.txt 
     done 
 done 
